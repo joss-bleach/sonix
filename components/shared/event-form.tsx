@@ -1,5 +1,5 @@
 "use client";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { eventFormSchema } from "@/lib/validator";
@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dropdown } from "./dropdown";
+import { FileUploader } from "./file-uploader";
 
 interface EventFormProps {
   userId: string;
@@ -30,6 +31,7 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
   userId,
   type,
 }) => {
+  const [files, setFiles] = useState<File[]>([]);
   const initialFormValues = eventDefaultValues;
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -97,7 +99,22 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
               </FormItem>
             )}
           />
-          {/* Image Upload */}
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="h-72">
+                  <FileUploader
+                    onFieldChange={field.onChange}
+                    imageUrl={field.value}
+                    setFiles={setFiles}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <Button type="submit">Submit</Button>
       </form>
