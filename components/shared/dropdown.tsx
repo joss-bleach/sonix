@@ -1,6 +1,6 @@
 "use client";
 
-import { FunctionComponent, startTransition, useState } from "react";
+import { FunctionComponent, startTransition, useEffect, useState } from "react";
 import { ICategory } from "@/mongodb/database/models/category.model";
 
 // Components
@@ -24,6 +24,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "../ui/input";
 
+// Actions
+import {
+  createCategory,
+  getAllCategories,
+} from "@/lib/actions/category.actions";
+
 interface DropdownProps {
   onChangeHandler?: (value: string) => void;
   value?: string;
@@ -36,7 +42,22 @@ export const Dropdown: FunctionComponent<DropdownProps> = ({
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
 
-  const handleAddNewCategory = () => {};
+  useEffect(() => {
+    const getCategories = async () => {
+      const categories = await getAllCategories();
+      if (!categories) {
+        return;
+      }
+      setCategories(categories as ICategory[]);
+    };
+    getCategories();
+  }, []);
+
+  const handleAddNewCategory = () => {
+    createCategory({ categoryName: newCategory.trim() }).then((category) => {
+      setCategories((previousState) => [...previousState, category]);
+    });
+  };
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value}>
@@ -56,7 +77,7 @@ export const Dropdown: FunctionComponent<DropdownProps> = ({
           ))}
         <AlertDialog>
           <AlertDialogTrigger className="p-medium-14 flex w-full rounded py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">
-            Open
+            Add a category
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
