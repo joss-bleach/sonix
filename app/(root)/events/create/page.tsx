@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 // Components
 import { EventForm } from "@/components/shared/event-form";
 
-const CreateEventPage = () => {
+const page = () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
   return (
@@ -20,4 +20,4 @@ const CreateEventPage = () => {
   );
 };
 
-export default CreateEventPage;
+export default page;

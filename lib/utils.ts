@@ -33,17 +33,17 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "en-GB",
     dateTimeOptions,
   );
 
   const formattedDate: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "en-GB",
     dateOptions,
   );
 
   const formattedTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "en-GB",
     timeOptions,
   );
 
