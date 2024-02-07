@@ -272,7 +272,7 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
               <Loader2 className="animate-spin text-white" />
             </span>
           ) : (
-            "Create Event"
+            `${type} Event`
           )}
         </Button>
       </form>
