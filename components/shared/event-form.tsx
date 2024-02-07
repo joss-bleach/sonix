@@ -5,10 +5,24 @@ import { useForm } from "react-hook-form";
 import { eventFormSchema } from "@/lib/validator";
 import * as z from "zod";
 import { eventDefaultValues } from "@/constants";
-import { Calendar, Link, Loader2, MapPin, PoundSterling } from "lucide-react";
+import {
+  Calendar,
+  Link,
+  Loader2,
+  MapPin,
+  PoundSterling,
+  Router,
+} from "lucide-react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+
+// Actions
+import { createEvent } from "@/lib/actions/event.actions";
+
+// Hooks
+import { useUploadThing } from "@/lib/uploadthing";
+import { useRouter } from "next/navigation";
 
 // Components
 import { Button } from "@/components/ui/button";
@@ -24,6 +38,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dropdown } from "./dropdown";
 import { FileUploader } from "./file-uploader";
+import { toast } from "sonner";
+import { IEvent } from "@/mongodb/database/models/event.model";
 
 interface EventFormProps {
   userId: string;
@@ -36,15 +52,45 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const initialFormValues = eventDefaultValues;
+  const { startUpload } = useUploadThing("imageUploader");
+  const router = useRouter();
 
+  const initialFormValues = eventDefaultValues;
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: initialFormValues,
   });
 
-  const handleOnSubmit = (values: z.infer<typeof eventFormSchema>) => {
-    console.log(values);
+  const handleOnSubmit = async (values: z.infer<typeof eventFormSchema>) => {
+    const eventData = values;
+
+    let uploadedImageUrl = values.imageUrl;
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files);
+      if (!uploadedImages) {
+        return;
+      } else {
+        uploadedImageUrl = uploadedImages[0].url;
+      }
+    }
+
+    if (type === "Create") {
+      try {
+        const newEvent: IEvent = await createEvent({
+          event: { ...values, imageUrl: uploadedImageUrl },
+          userId,
+          path: "/profile",
+        });
+        if (newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent._id}`);
+          toast.success(`🤘 ${newEvent.title} created!`);
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error("Unable to create your event.");
+      }
+    }
   };
 
   return (
