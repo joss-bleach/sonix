@@ -1,10 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// Actions
+import { getAllEvents } from "@/lib/actions/event.actions";
+
 // Components
 import { Button } from "@/components/ui/button";
+import { Collection } from "@/components/shared/collection";
 
-const Home = () => {
+const Home = async () => {
+  const events = await getAllEvents({
+    query: "",
+    category: "",
+    page: 1,
+    limit: 6,
+  });
+
   return (
     <main>
       <>
@@ -43,6 +54,15 @@ const Home = () => {
           <div className="flex w-full flex-col gap-5 md:flex-row">
             Search + Categories
           </div>
+          <Collection
+            data={events?.data}
+            emptyStateTitle="No events found"
+            emptyStateSubtext="There are no events at the moment. Come back again later."
+            collectionType="All_Events"
+            limit={6}
+            page={1}
+            totalPages={2}
+          />
         </section>
       </>
     </main>

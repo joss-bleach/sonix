@@ -19,6 +19,7 @@ const page = async ({ params: { id } }: SearchParamProps) => {
           src={event.imageUrl}
           alt={`${event.title} poster.`}
           width={1000}
+          priority
           height={1000}
           className="h-full max-h-[70dvh] min-h-[300xp] object-cover object-center md:max-h-dvh"
         />

@@ -2,7 +2,7 @@
 import { connectToDatabase } from "@/mongodb/database";
 import { handleError } from "../utils";
 
-import { CreateEventParams } from "@/types";
+import { CreateEventParams, GetAllEventsParams } from "@/types";
 
 // Models
 import User from "@/mongodb/database/models/user.model";
@@ -59,6 +59,37 @@ export const getEventById = async (eventId: string) => {
     }
 
     return JSON.parse(JSON.stringify(event));
+  } catch (err) {
+    handleError(err);
+  }
+};
+
+export const getAllEvents = async ({
+  query,
+  limit = 6,
+  page,
+  category,
+}: GetAllEventsParams) => {
+  try {
+    await connectToDatabase();
+
+    const conditions = {};
+
+    const eventsQuery = Event.find()
+      .sort({ createdAt: "desc" })
+      .skip(0)
+      .limit(limit);
+    const events = await populateEventOrganisersAndCategories(eventsQuery);
+    const eventCount = await Event.countDocuments(conditions);
+
+    if (!events) {
+      throw new Error("Event not found");
+    }
+
+    return {
+      data: JSON.parse(JSON.stringify(events)),
+      totalPages: Math.ceil(eventCount / limit),
+    };
   } catch (err) {
     handleError(err);
   }
