@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "sonner";
 
 // Types
 import { IEvent } from "@/mongodb/database/models/event.model";
@@ -24,13 +25,13 @@ export const Checkout: FunctionComponent<CheckoutProps> = ({
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("success")) {
-      console.log("Order placed! You will receive an email confirmation.");
+      toast.message("Purchase successful", {
+        description: `You're going to ${event.title}!`,
+      });
     }
 
     if (query.get("canceled")) {
-      console.log(
-        "Order canceled -- continue to shop around and checkout when you’re ready.",
-      );
+      toast.error("Purchase unsuccessful. Please try again.");
     }
   }, []);
 
