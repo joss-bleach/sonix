@@ -12,7 +12,7 @@ const font = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Sonix",
+  title: "Sonix | Create share, and experience extraordinary music events",
   description: "Music events created and curated by the community.",
   icons: {
     icon: "/assets/SVG/sonix-logo.svg",

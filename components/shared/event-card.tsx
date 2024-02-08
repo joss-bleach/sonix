@@ -50,7 +50,7 @@ export const EventCard: FunctionComponent<EventCardProps> = ({
               {event.isFree ? "Free" : `£${event.price}`}
             </span>
           )}
-          <p className="p-semibold-15 rounded bg-grey-500/10 px-4 py-1 text-grey-500">
+          <p className="p-semibold-15 line-clamp-1 rounded bg-grey-500/10 px-4 py-1 text-grey-500">
             {event.category.name}
           </p>
         </div>
