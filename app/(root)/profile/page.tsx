@@ -22,7 +22,7 @@ const page = async () => {
             Your upcoming events
           </h3>
           <Button asChild className="button hidden sm:flex">
-            <Link href="/#events">See more events</Link>
+            <Link href="/#events">View events</Link>
           </Button>
         </div>
       </section>
