@@ -14,6 +14,7 @@ import {
 
 // Components
 import { Collection } from "@/components/shared/collection";
+import { CheckoutButton } from "@/components/shared/checkout-button";
 
 const page = async ({ params: { id }, searchParams }: SearchParamProps) => {
   const event = await getEventById(id);
@@ -55,7 +56,7 @@ const page = async ({ params: { id }, searchParams }: SearchParamProps) => {
                 </p>
               </div>
             </div>
-            {/* Checkout Button */}
+            <CheckoutButton event={event} />
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-2 md:gap-3">
                 <Calendar size={24} className="text-[#F5624D]" />
