@@ -6,6 +6,9 @@ import { auth } from "@clerk/nextjs";
 import { IEvent } from "@/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 
+// Components
+import { DeleteConfirmation } from "./delete-confirmation";
+
 interface EventCardProps {
   event: IEvent;
   hasOrderLink?: boolean;
@@ -34,6 +37,7 @@ export const EventCard: FunctionComponent<EventCardProps> = ({
           <Link href={`events/${event._id}/update`}>
             <Pencil size={18} />
           </Link>
+          <DeleteConfirmation eventId={event._id} />
         </div>
       )}
       <Link

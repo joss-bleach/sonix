@@ -17,8 +17,11 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
+// Types
+import { IEvent } from "@/mongodb/database/models/event.model";
+
 // Actions
-import { createEvent } from "@/lib/actions/event.actions";
+import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 
 // Hooks
 import { useUploadThing } from "@/lib/uploadthing";
@@ -39,14 +42,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dropdown } from "./dropdown";
 import { FileUploader } from "./file-uploader";
 import { toast } from "sonner";
-import { IEvent } from "@/mongodb/database/models/event.model";
 
 interface EventFormProps {
   userId: string;
   type: "Create" | "Update";
+  eventId?: string;
+  event?: IEvent;
 }
 
 export const EventForm: FunctionComponent<EventFormProps> = ({
+  eventId,
+  event,
   userId,
   type,
 }) => {
@@ -55,15 +61,22 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
   const { startUpload } = useUploadThing("imageUploader");
   const router = useRouter();
 
-  const initialFormValues = eventDefaultValues;
+  const initialFormValues =
+    event && type === "Update"
+      ? {
+          ...event,
+          startDateTime: new Date(event.startDateTime),
+          endDateTime: new Date(event.endDateTime),
+        }
+      : eventDefaultValues;
+
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: initialFormValues,
   });
 
   const handleOnSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    const eventData = values;
-
+    console.log("Click");
     let uploadedImageUrl = values.imageUrl;
     if (files.length > 0) {
       const uploadedImages = await startUpload(files);
@@ -89,6 +102,29 @@ export const EventForm: FunctionComponent<EventFormProps> = ({
       } catch (err) {
         console.log(err);
         toast.error("Unable to create your event.");
+      }
+    }
+
+    if (type === "Update") {
+      if (!eventId) {
+        router.back();
+        return;
+      }
+
+      try {
+        const updatedEvent = await updateEvent({
+          userId,
+          event: { ...values, imageUrl: uploadedImageUrl, _id: eventId },
+          path: `/events/${eventId}`,
+        });
+
+        if (updatedEvent) {
+          form.reset();
+          router.push(`/events/${updatedEvent._id}`);
+          toast.success(`${updatedEvent.title} updated.`);
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   };
