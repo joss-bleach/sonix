@@ -15,6 +15,7 @@ interface CollectionProps {
 
 // Components
 import { EventCard } from "./event-card";
+import { Pagination } from "./pagination";
 
 export const Collection: FunctionComponent<CollectionProps> = ({
   data,
@@ -51,6 +52,13 @@ export const Collection: FunctionComponent<CollectionProps> = ({
           );
         })}
       </ul>
+      {totalPages > 1 && (
+        <Pagination
+          urlParamName={urlParamName!}
+          page={page}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };

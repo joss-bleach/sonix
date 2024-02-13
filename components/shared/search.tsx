@@ -2,12 +2,13 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Search as SearchIcon } from "lucide-react";
 
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+
 // Hooks
 import { useRouter, useSearchParams } from "next/navigation";
 
 // Components
 import { Input } from "@/components/ui/input";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
 interface SearchProps {
   placeholder?: string;

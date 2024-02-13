@@ -11,6 +11,7 @@ import { getAllEvents } from "@/lib/actions/event.actions";
 import { Button } from "@/components/ui/button";
 import { Collection } from "@/components/shared/collection";
 import { Search } from "@/components/shared/search";
+import { CategoryFilter } from "@/components/shared/category-filter";
 
 const Home = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
@@ -61,6 +62,7 @@ const Home = async ({ searchParams }: SearchParamProps) => {
           </h2>
           <div className="flex w-full flex-col gap-5 md:flex-row">
             <Search placeholder="Search events" />
+            <CategoryFilter />
           </div>
           <Collection
             data={events?.data}
@@ -68,8 +70,8 @@ const Home = async ({ searchParams }: SearchParamProps) => {
             emptyStateSubtext="There are no events at the moment. Come back again later."
             collectionType="All_Events"
             limit={6}
-            page={1}
-            totalPages={2}
+            page={page}
+            totalPages={events?.totalPages}
           />
         </section>
       </>

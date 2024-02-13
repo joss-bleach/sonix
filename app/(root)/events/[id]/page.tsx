@@ -97,9 +97,9 @@ const page = async ({ params: { id }, searchParams }: SearchParamProps) => {
           emptyStateTitle="No events found"
           emptyStateSubtext="There are no similar events at the moment. Come back again later."
           collectionType="All_Events"
-          limit={6}
-          page={1}
-          totalPages={2}
+          limit={3}
+          page={searchParams.page as string}
+          totalPages={relatedEvents?.totalPages}
         />
       </section>
     </>
