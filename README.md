@@ -14,6 +14,7 @@ Frontend: NextJS, Shadcn/UI, TailwindCSS
 Backend: Mongoose
 Database: MongoDB
 Authentication: Clerk
+Image hosting: Uploadthing
 Deployment: Vercel
 
 ## Project Highlights:
