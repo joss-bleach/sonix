@@ -1,18 +1,26 @@
 import Link from "next/link";
 import Image from "next/image";
 
+// Types
+import { SearchParamProps } from "@/types";
+
 // Actions
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 // Components
 import { Button } from "@/components/ui/button";
 import { Collection } from "@/components/shared/collection";
+import { Search } from "@/components/shared/search";
 
-const Home = async () => {
+const Home = async ({ searchParams }: SearchParamProps) => {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || "";
+  const category = (searchParams?.category as string) || "";
+
   const events = await getAllEvents({
-    query: "",
-    category: "",
-    page: 1,
+    query: searchText,
+    category: category,
+    page: page,
     limit: 6,
   });
 
@@ -52,7 +60,7 @@ const Home = async () => {
             the best music events
           </h2>
           <div className="flex w-full flex-col gap-5 md:flex-row">
-            Search + Categories
+            <Search placeholder="Search events" />
           </div>
           <Collection
             data={events?.data}

@@ -11,16 +11,20 @@ import { Collection } from "@/components/shared/collection";
 
 // Types
 import { IOrder } from "@/mongodb/database/models/order.model";
+import { SearchParamProps } from "@/types";
 
-const page = async () => {
+const page = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
 
-  const myOrders = await getOrdersByUser({ userId, page: 1 });
+  const ordersPage = Number(searchParams?.ordersPage) || 1;
+  const eventsPage = Number(searchParams?.ordersPage) || 1;
+
+  const myOrders = await getOrdersByUser({ userId, page: ordersPage });
   const myOrdersAsEvents =
     myOrders?.data.map((order: IOrder) => order.event) || [];
 
-  const organisedEvents = await getEventsByUser({ userId, page: 1 });
+  const organisedEvents = await getEventsByUser({ userId, page: eventsPage });
 
   return (
     <>
@@ -41,9 +45,9 @@ const page = async () => {
           emptyStateSubtext="You currently have no upcoming events."
           collectionType="My_Tickets"
           limit={3}
-          page={1}
+          page={ordersPage}
           urlParamName="ordersPage"
-          totalPages={2}
+          totalPages={myOrders?.totalPages}
         />
       </section>
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
@@ -63,9 +67,9 @@ const page = async () => {
           emptyStateSubtext="You have not created any events."
           collectionType="Events_Organised"
           limit={6}
-          page={1}
+          page={eventsPage}
           urlParamName="eventsPage"
-          totalPages={2}
+          totalPages={organisedEvents?.totalPages}
         />
       </section>
     </>

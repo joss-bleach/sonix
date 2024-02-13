@@ -102,12 +102,12 @@ export const getEventById = async (eventId: string) => {
   }
 };
 
-export const getAllEvents = async ({
+export async function getAllEvents({
   query,
   limit = 6,
   page,
   category,
-}: GetAllEventsParams) => {
+}: GetAllEventsParams) {
   try {
     await connectToDatabase();
 
@@ -125,26 +125,22 @@ export const getAllEvents = async ({
     };
 
     const skipAmount = (Number(page) - 1) * limit;
-
-    const eventsQuery = Event.find()
+    const eventsQuery = Event.find(conditions)
       .sort({ createdAt: "desc" })
       .skip(skipAmount)
       .limit(limit);
-    const events = await populateEventOrganisersAndCategories(eventsQuery);
-    const eventCount = await Event.countDocuments(conditions);
 
-    if (!events) {
-      throw new Error("Event not found");
-    }
+    const events = await populateEventOrganisersAndCategories(eventsQuery);
+    const eventsCount = await Event.countDocuments(conditions);
 
     return {
       data: JSON.parse(JSON.stringify(events)),
-      totalPages: Math.ceil(eventCount / limit),
+      totalPages: Math.ceil(eventsCount / limit),
     };
-  } catch (err) {
-    handleError(err);
+  } catch (error) {
+    handleError(error);
   }
-};
+}
 
 export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
   try {
