@@ -1,6 +1,6 @@
-# Evently: A Full-Stack Event Platform
+# Sonix: A Full-Stack Event Platform
 
-Evently is a full-stack web application that allows users to easily create and manage events, sell tickets online, and connect with audiences.
+Sonix is a full-stack web application that allows users to easily create and manage events, sell tickets online, and connect with audiences.
 
 ## Key Features:
 
