@@ -17,7 +17,7 @@ Authentication: Clerk
 Image hosting: Uploadthing
 Deployment: Vercel
 
-## Project Highlights:
+## Project Highlights:
 
 Focus on User Experience: Intuitive design and user-friendly features for both event creators and attendees.
 Scalability & Security: Serverless and cloud architecture to make scaling easy in the future.
