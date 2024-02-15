@@ -19,8 +19,8 @@ Deployment: Vercel
 
 ## Project Highlights:
 
-Focus on User Experience: Intuitive design and user-friendly features for both event creators and attendees.
-Scalability & Security: Serverless and cloud architecture to make scaling easy in the future.
-Modern Development Practices: Adherence to modern development standards and clean code principles, using NextJS 14.1.0 for the latest features. Stripe and Clerk webhooks to monitor changes and update the app when necessary.
+- Focus on User Experience: Intuitive design and user-friendly features for both event creators and attendees.
+- Scalability & Security: Serverless and cloud architecture to make scaling easy in the future.
+- Modern Development Practices: Adherence to modern development standards and clean code principles, using NextJS 14.1.0 for the latest features. Stripe and Clerk webhooks to monitor changes and update the app when necessary.
 
 Reach out to me at joss.bleach@outlook.com with any questions or feedback.
